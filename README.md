@@ -33,3 +33,4 @@ docker run -d -p 8080:8080 bulletin-board
 
 If you would like to use a backend written in Go, [thewhitetulip](http://github.com/thewhitetulip) has written on. See [the source code](https://github.com/thewhitetulip/go-vue-events).
  
+# test trigger
