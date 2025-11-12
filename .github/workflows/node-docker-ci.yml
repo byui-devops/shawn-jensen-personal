@@ -1,7 +1,5 @@
 name: Node.js CI and Docker Build
 
-name: Node.js CI and Docker Build
-
 on:
   push:
     branches: [ init ]
@@ -15,40 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Setup Node.js and NPM
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
           cache: 'npm'
 
-      # Step 3: Install dependencies
-      - name: Install npm packages
+      - name: Install dependencies
         run: npm install
 
-      # Step 4: Run tests
       - name: Run tests
         run: npm run test
 
-      # Step 5: Run test coverage
       - name: Test coverage
         run: npm run test:coverage
 
-      # Step 6: Log in to Docker Hub
       - name: Log in to Docker Hub
         run: |
-          echo "hAhOHXf7lXQ8uBdiuBSBWbD0SCE" | docker login -u "shawnjensen" --password-stdin
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      # Step 7: Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/bulletin-board-app:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bulletin-board-app:1.0 .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/bulletin-board-app:1.0 ${{ secrets.DOCKERHUB_USERNAME }}/bulletin-board-app:latest
 
-      # Step 8: Push Docker image
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/bulletin-board-app:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bulletin-board-app:1.0
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bulletin-board-app:latest
