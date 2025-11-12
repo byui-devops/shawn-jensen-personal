@@ -1,11 +1,14 @@
 name: Node.js CI and Docker Build
 
+name: Node.js CI and Docker Build
+
 on:
   push:
-    branches: [ main ]
+    branches: [ init ]
   pull_request:
     types: [closed]
-    branches: [ main ]
+    branches: [ init ]
+  workflow_dispatch:
 
 jobs:
   build-test-docker:
